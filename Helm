@@ -44,7 +44,23 @@ kubectl get all
 source <(helm completion bash)
 ===================================================
 https://artifacthub.io/
-
-
 =================================================================================
- 
+For addning other depenent charts 
+drwxr-xr-x 2 cloud_user cloud_user 4096 Dec 10 19:52 charts
+-rw-r--r-- 1 cloud_user cloud_user 1253 Dec 10 21:51 Chart.yaml
+step1. edit Chart.yml
+dependencies:
+- name: appmesh-controller
+  version: "0.5.0"
+  repository: "https://aws.github.io/eks-charts"
+Step2. cloud_user@43ab4ac5431c:~/myhelm$ helm dependency build mchart1
+       cloud_user@43ab4ac5431c:~/myhelm/mchart1/charts$ ls
+appmesh-controller-0.5.0.tgz
+Step3. cloud_user@43ab4ac5431c:~/myhelm/mchart1/charts$ cd ../..
+cloud_user@43ab4ac5431c:~/myhelm$  helm install ex1 mchart1
+ helm dependency list mchart1
+* To update dependency version--edit chart.yml and run command  :helm dependency update mchart1
+================================================================================
+ helm get values example  (note:here chartname is providesd as arg)
+ helm history example
+ helm upgrade example mchart1
