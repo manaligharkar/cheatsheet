@@ -1,1 +1,50 @@
+Installation --> https://helm.sh/docs/intro/install/
 
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+
+Logs:
+cloud_user@43ab4ac5431c:~$ ./get_helm.sh
+Downloading https://get.helm.sh/helm-v3.7.2-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+[sudo] password for cloud_user:
+helm installed into /usr/local/bin/helm
+cloud_user@43ab4ac5431c:~$ helm version
+version.BuildInfo{Version:"v3.7.2", GitCommit:"663a896f4a815053445eec4153677ddc24a0a361", GitTreeState:"clean", GoVersion:"go1.16.10"}
+==================================================================================================================================================
+using helm chart
+ helm create mchart1
+ cloud_user@43ab4ac5431c:~/myhelm$ cd mchart1/
+cloud_user@43ab4ac5431c:~/myhelm/mchart1$ ls -lrt
+total 16
+-rw-r--r-- 1 cloud_user cloud_user 1874 Dec 10 19:52 values.yaml
+drwxr-xr-x 3 cloud_user cloud_user 4096 Dec 10 19:52 templates
+drwxr-xr-x 2 cloud_user cloud_user 4096 Dec 10 19:52 charts
+-rw-r--r-- 1 cloud_user cloud_user 1143 Dec 10 19:52 Chart.yaml
+--------------------------------------------
+cloud_user@43ab4ac5431c:~/myhelm/mchart1/templates$ ls -lrt
+total 32
+drwxr-xr-x 2 cloud_user cloud_user 4096 Dec 10 19:52 tests
+-rw-r--r-- 1 cloud_user cloud_user  320 Dec 10 19:52 serviceaccount.yaml
+-rw-r--r-- 1 cloud_user cloud_user  361 Dec 10 19:52 service.yaml
+-rw-r--r-- 1 cloud_user cloud_user 2079 Dec 10 19:52 ingress.yaml
+-rw-r--r-- 1 cloud_user cloud_user  916 Dec 10 19:52 hpa.yaml
+-rw-r--r-- 1 cloud_user cloud_user 1836 Dec 10 19:52 deployment.yaml
+-rw-r--r-- 1 cloud_user cloud_user 1782 Dec 10 19:52 _helpers.tpl
+-rw-r--r-- 1 cloud_user cloud_user 1747 Dec 10 19:52 NOTES.txt
+cloud_user@43ab4ac5431c:~/myhelm/mchart1/templates$
+---------------------------------------------------------
+cloud_user@43ab4ac5431c:~/myhelm$ helm lint mchart1   -->to check syntax bfor running
+cloud_user@43ab4ac5431c:~/myhelm$ helm install example --dry-run mchart1
+cloud_user@43ab4ac5431c:~/myhelm$ helm install example  mchart1 --set service.type=NodePort
+helm  list
+kubectl get all
+source <(helm completion bash)
+===================================================
+https://artifacthub.io/
+
+
+=================================================================================
+ 
