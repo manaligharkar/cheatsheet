@@ -64,3 +64,5 @@ cloud_user@43ab4ac5431c:~/myhelm$  helm install ex1 mchart1
  helm get values example  (note:here chartname is providesd as arg)
  helm history example
  helm upgrade example mchart1
+ helm ls --all-namespaces or -A
+ helm ls --failed   ==>to see failed deplyments
