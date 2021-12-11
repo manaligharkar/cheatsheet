@@ -92,8 +92,23 @@ cloud_user@43ab4ac5431c:~/myhelm$ helm pull airflow --version 1.3.0 --repo https
 cloud_user@43ab4ac5431c:~/myhelm$ ls
 airflow-1.3.0.tgz  mchart1  mchart1-0.1.0.tgz
 ============================================================
-
+helm upgrade manali1
+cloud_user@43ab4ac5431c:~/myhelm$ helm history manali1
+REVISION        UPDATED                         STATUS          CHART           APP VERSION     DESCRIPTION
+1               Sat Dec 11 13:55:07 2021        superseded      mchart1-0.1.0   1.16.0          Install complete
+2               Sat Dec 11 14:31:12 2021        deployed        mchart1-0.1.0   1.16.0          Upgrade complete
+cloud_user@43ab4ac5431c:~/myhelm$
+ helm rollback manali1 1
+ helm history manali1
 ===============================================================
+ helm search hub nginx
+ helm search repo nginx
+ hem show -->used for getting charts realted info like values ,all
+ cloud_user@43ab4ac5431c:~/myhelm$ helm ls
+NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+manali1 default         4               2021-12-11 14:35:11.81133933 +0000 UTC  deployed        mchart1-0.1.0   1.16.0
+cloud_user@43ab4ac5431c:~/myhelm$ helm status manali1
+=========================================================
 
 
 
