@@ -1,1 +1,2 @@
 netstat -tupln
+ssh-copy-id cloud_user@3.110.222.179  --> it copies authorized_keys to target servers .ssh and add known host file on source server.
