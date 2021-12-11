@@ -1,6 +1,7 @@
 Link for offical cheatsheet by k8s :  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 kubectl config current-context 
 Init conatiner-ssl cert configuartion/git , Sidecar--pushng logs to aws S3
+port forwrd for cluster-ip : https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
 
 
 
