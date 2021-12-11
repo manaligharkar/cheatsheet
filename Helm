@@ -66,3 +66,34 @@ cloud_user@43ab4ac5431c:~/myhelm$  helm install ex1 mchart1
  helm upgrade example mchart1
  helm ls --all-namespaces or -A
  helm ls --failed   ==>to see failed deplyments
+ ======================================================
+ cloud_user@43ab4ac5431c:~/myhelm$ helm package mchart1
+Successfully packaged chart and saved it to: /home/cloud_user/myhelm/mchart1-0.1.0.tgz
+cloud_user@43ab4ac5431c:~/myhelm$ ls -lrt
+total 8
+drwxr-xr-x 4 cloud_user cloud_user 4096 Dec 10 22:44 mchart1
+-rw-rw-r-- 1 cloud_user cloud_user 3937 Dec 11 13:33 mchart1-0.1.0.tgz
+cloud_user@43ab4ac5431c:~/myhelm$helm package mchart1 --destination /home/ --version 3.3.3    
+========================================================
+Link for Plugin : https://helm.sh/docs/community/related/
+helm plugin install https://github.com/databus23/helm-diff
+helm diff upgrade manali1 mchart1 --values mchart1/values.yaml  --> it wil just show valus to get chnaged , No upgrade wil happnen
+helm plugin update diff
+cloud_user@43ab4ac5431c:~/myhelm$ helm plugin ls
+NAME    VERSION DESCRIPTION
+diff    3.1.3   Preview helm upgrade changes as a diff
+cloud_user@43ab4ac5431c:~/myhelm$
+helm plugin uninstall diff
+=======================================================
+helm repo add apache-airflow https://airflow.apache.org/
+helm install my-airflow apache-airflow/airflow --version 1.3.0
+***helm pull airflow --version 1.3.0 --repo https://airflow.apache.org/**
+cloud_user@43ab4ac5431c:~/myhelm$ helm pull airflow --version 1.3.0 --repo https://airflow.apache.org/
+cloud_user@43ab4ac5431c:~/myhelm$ ls
+airflow-1.3.0.tgz  mchart1  mchart1-0.1.0.tgz
+============================================================
+
+===============================================================
+
+
+
