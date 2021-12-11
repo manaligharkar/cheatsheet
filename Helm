@@ -116,6 +116,8 @@ use {{ include "labeselector" }} in deplyment.yaml
 toYaml --> to copy many lines from values.yaml
 #helm plugin install https://github.com/datreeio/helm-datree
 Use case for Datree :  helm datree test mchart1   ==> only need to suppy chart directory ie mychart1
+===============================================
+to use diffrent namespaces and values.yaml user following command: helm create -n mynamespace -d testchartdir/dev-values.yaml testchartdir --create-namespace
 
 
 
