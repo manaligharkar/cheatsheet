@@ -1,5 +1,6 @@
 Link for offical cheatsheet by k8s :  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 kubectl config current-context 
+Init conatiner-ssl cert configuartion/git , Sidecar--pushng logs to aws S3
 
 
 
