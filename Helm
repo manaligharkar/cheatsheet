@@ -109,6 +109,14 @@ NAME    NAMESPACE       REVISION        UPDATED                                 
 manali1 default         4               2021-12-11 14:35:11.81133933 +0000 UTC  deployed        mchart1-0.1.0   1.16.0
 cloud_user@43ab4ac5431c:~/myhelm$ helm status manali1
 =========================================================
+Built in objects: Chart, Release,Values
+helm template mytemp mchart1 > kk.yaml  ==>it will just show how deplyent file will looks like.
+Link for Functions:  https://helm.sh/docs/chart_template_guide/function_list/   **commonly used functions: lower |upper| default "nginx"|quote --in appName|required|to use named tempate from _helper.tlp using define
+use {{ include "labeselector" }} in deplyment.yaml
+toYaml --> to copy many lines from values.yaml
+#helm plugin install https://github.com/datreeio/helm-datree
+Use case for Datree :  helm datree test mchart1   ==> only need to suppy chart directory ie mychart1
+
 
 
 
