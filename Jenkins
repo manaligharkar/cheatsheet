@@ -1,1 +1,5 @@
+Jenkins 2.319.1
+To see defaults variable-->http://65.1.107.235:8080/env-vars.html/ ex>BUILD_URL
+*Multibranch pipeline --scans braches for jenkins files in given repo url:https://github.com/manaligharkar/manalitest1.git and perform build as per chnages at given time periodically defined
+in the configuration.
 
