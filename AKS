@@ -94,13 +94,31 @@ kubectl apply -f kibana-service.yaml
 
 # Check out deployed pods
 kubectl get pods
+cloud_user@43ab4ac5431c:~/my-kibana$ kubectl get pods
+NAME                              READY   STATUS    RESTARTS   AGE
+elasticsearch-logging-0           1/1     Running   0          4m8s
+elasticsearch-logging-1           1/1     Running   0          2m29s
+elasticsearch-logging-2           1/1     Running   0          75s
+fluentd-es-v3.1.1-2dzqr           1/1     Running   1          3m38s
+fluentd-es-v3.1.1-kmwsw           1/1     Running   1          3m38s
+fluentd-es-v3.1.1-s7dh2           1/1     Running   1          3m38s
+kibana-logging-6778fdcd79-78zcs   1/1     Running   1          3m33s
+cloud_user@43ab4ac5431c:~/my-kibana$
+
 
 # Retrieve service
 kubectl get svc kibana-logging
+cloud_user@43ab4ac5431c:~/my-kibana$ kubectl get svc kibana-logging
+NAME             TYPE           CLUSTER-IP   EXTERNAL-IP     PORT(S)          AGE
+kibana-logging   LoadBalancer   10.0.9.115   13.89.115.144   5601:32612/TCP   4m8s
+cloud_user@43ab4ac5431c:~/my-kibana$
 
+http://13.89.115.144:5601
 # Check out Kibana
 $KibanaURL="http://" + (kubectl get svc kibana-logging -o jsonpath='{.status.loadBalancer.ingress[0].ip}') + ":5601"
 Start-Process $KibanaURL
+On Kibaban-->create new "Index pattern" where kinaa organaises data
+log* and @timestamp
 
 # Sale nginx
 kubectl scale deployment nginx --replicas=10 -n nginx
