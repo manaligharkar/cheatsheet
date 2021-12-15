@@ -1,4 +1,4 @@
-Installation --> https://helm.sh/docs/intro/install/
+Installation --> https://helm.sh/docs/intro/install/  latest version of Helm-->v3.7.2
 
 $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 $ chmod 700 get_helm.sh
