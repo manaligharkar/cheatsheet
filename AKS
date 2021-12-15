@@ -35,6 +35,109 @@ kubectl config use-context kubernetes-admin@kubernetes
 #use kubectl get nodes
 kubectl get nodes
 #az aks delete --resource-group "Kubernetes-Cloud" --name CSCluster #--yes --no-wait
+==============================================
+Monitring AKS
+# Set variables to be used in the scripts in other demos
+$Region="eastus"
+$RG="1-9bee0ce5-playground-sandbox"
+$Sub=""
+$AKSCluster="AKSCluster"
+$AKSCluster_Limited="AKSCluster-Limited"
+$AKSCluster_CNI="AKSCluster-CNI"
+$ClusterSize="Standard_DS4_v2"
+$ClusterSize_Limited="Standard_H8"
+$LAWS_Name="AKS-LAWS"
+
+cloud_user@43ab4ac5431c:~$ kubectl get nodes
+NAME                                STATUS   ROLES   AGE     VERSION
+aks-nodepool1-34259712-vmss000000   Ready    agent   5m52s   v1.20.9
+aks-nodepool1-34259712-vmss000001   Ready    agent   4m39s   v1.20.9
+aks-nodepool1-34259712-vmss000002   Ready    agent   5m54s   v1.20.9
+cloud_user@43ab4ac5431c:~$
+# Create Log Analytics Workspace#IMP
+az monitor log-analytics workspace create --resource-group $RG --workspace-name $LAWS_Name
+
+Go to browser--AKS cluster-->monitoring-insights-->select drop down--newly created "Log Analytics workspace" i.e.AKS-LAWS--click on Enable.
+defaul pod count wil b 15-system pod
+# Create Namespace
+kubectl create namespace nginx
+kubectl config set-context --current --namespace=nginx
+
+# Create a Deployment
+kubectl create deployment nginx --image=nginx 
+after this on brwoser--u wil see 16 pod
+
+# Scale up
+kubectl scale deployment nginx --replicas=20
+# Scale down
+kubectl scale deployment nginx --replicas=2 
+workbook/metrics wil show data
+IMP--ALert-->1step-->create action group--email noticification.
+2nd step->create alert rule->create condictio like node is in "not ready " --count 1 -->save.
+3step--selected--action grop which we created in 1st step.
+4th--give name to alert rule and set severity
+second way--inside insights--there are Recommended alerts (Preview)
+select alert-enable--assign action group.
+Logs-->u can run any alert RUN-->chnage the timing in query and export result.
+=====================================
+Kibana+garfana
+kubectl create namespace logging
+kubectl config set-context --current --namespace=logging
+
+# Deploy elastic search, fluentd and Kibana
+kubectl apply -f es-statefulset.yaml
+kubectl apply -f es-service.yaml
+kubectl apply -f fluentd-es-configmap.yaml
+kubectl apply -f fluentd-es-ds.yaml
+kubectl apply -f kibana-deployment.yaml
+kubectl apply -f kibana-service.yaml
+
+# Check out deployed pods
+kubectl get pods
+
+# Retrieve service
+kubectl get svc kibana-logging
+
+# Check out Kibana
+$KibanaURL="http://" + (kubectl get svc kibana-logging -o jsonpath='{.status.loadBalancer.ingress[0].ip}') + ":5601"
+Start-Process $KibanaURL
+
+# Sale nginx
+kubectl scale deployment nginx --replicas=10 -n nginx
+
+# Create Namespace for Grafana
+kubectl create namespace monitoring
+kubectl config set-context --current --namespace=monitoring
+
+# Add Helm repos / update Helm repos
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+
+# Install Prometheus stack (which includes Grafana!)
+helm install monitor prometheus-community/kube-prometheus-stack --namespace monitoring
+
+# Check our Pods and Service
+kubectl get pods
+kubectl get svc monitor-grafana
+
+# Change Service-Type to LoadBalancer
+kubectl patch svc monitor-grafana -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'
+kubectl get svc monitor-grafana
+
+# Check our Grafana Portal
+# Default credentials:
+# Username: admin
+# Password: prom-operator
+$GrafanaURL="http://" + (kubectl get svc monitor-grafana -o jsonpath='{.status.loadBalancer.ingress[0].ip}') 
+Start-Process $GrafanaURL
+
+# Scale the nginx deployment
+kubectl scale deployment nginx --replicas=15 -n nginx
+
+
+
+
 
 
 
