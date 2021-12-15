@@ -2,4 +2,9 @@ Jenkins 2.319.1
 To see defaults variable-->http://IPofJenkins:8080/env-vars.html/ ex>BUILD_URL
 *Multibranch pipeline --scans braches for jenkins files in given repo url:https://github.com/manaligharkar/manalitest1.git and perform build as per chnages at given time periodically defined
 in the configuration.
+#email configuration throgh-mailhog docker image.
+docker pull mailhog/mailhog
+docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
+Then use public IP : http://13.234.66.187:8025/
+To configure in manage jenkins-->configure system--> SMTP server--use private Ip of server and Port 1025 , u can test giving ur email-->it finaly redirects to  http://13.234.66.187:8025/
 
