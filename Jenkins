@@ -7,4 +7,22 @@ docker pull mailhog/mailhog
 docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
 Then use public IP : http://13.234.66.187:8025/
 To configure in manage jenkins-->configure system--> SMTP server--use private Ip of server and Port 1025 , u can test giving ur email-->it finaly redirects to  http://13.234.66.187:8025/
+#mail pipeline JOB :
+pipeline {
+    agent any
 
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+            post {
+		always {
+			mail bcc: '', body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "${currentBuild.result} CI: Project name -> ${env.JOB_NAME}", to: "manaligharkar@gmail.com";  
+		}
+	}
+        }
+    }
+    
+}
+==========================================================
