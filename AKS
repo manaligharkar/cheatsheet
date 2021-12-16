@@ -182,6 +182,30 @@ monitor-prometheus-node-exporter-fcf57                   1/1     Running   0    
 monitor-prometheus-node-exporter-pkn8c                   1/1     Running   0          2m
 prometheus-monitor-kube-prometheus-st-prometheus-0       2/2     Running   0          115s
 cloud_user@43ab4ac5431c:~$
+=============================================
+cloud_user@43ab4ac5431c:~$ kubectl get svc monitor-grafana
+NAME              TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+monitor-grafana   ClusterIP   10.0.67.46   <none>        80/TCP    2m42s
+# Change Service-Type to LoadBalancer
+kubectl patch svc monitor-grafana -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'   -->windows
+kubectl patch svc monitor-grafana -p '{"spec": {"type": "LoadBalancer"}}'         -->Unix
+cloud_user@43ab4ac5431c:~$  kubectl get svc monitor-grafana
+NAME              TYPE           CLUSTER-IP   EXTERNAL-IP    PORT(S)        AGE
+monitor-grafana   LoadBalancer   10.0.67.46   20.97.73.151   80:31455/TCP   16m
+cloud_user@43ab4ac5431c:~$
+cloud_user@43ab4ac5431c:~$ kubectl get svc monitor-grafana -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+20.97.73.151
+cloud_user@43ab4ac5431c:~$
+http://20.97.73.151/--> will give garfana url
+If using Prometheus Operator then user/pass is:
+
+user: admin
+pass: prom-operator
+===========================
+To see current namespace
+cloud_user@43ab4ac5431c:~$ kubectl config get-contexts --no-headers | grep '*' | grep -Eo '\S+$'   OR kubectl config get-contexts
+=============================
+
 
 
 
