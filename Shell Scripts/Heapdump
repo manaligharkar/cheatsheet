@@ -1,0 +1,95 @@
+#!/bin/bash
+#title           :Script_Heap_and_Thread_Dumps_ServiceName_Or_CID.sh
+#description     :This script will create Heapdump and 3 threadumps for each ContainerID for input given as ServiceNames or ConatinerIDs 
+#                 and dumps will be at location : /metlife/archive/heapthread_dumps/ then pushes dumps to Ycrash analysis
+#author		 :Manali Gharkar : email: manali.gharkar@metlife.com
+#date            :22092021
+#usage		 :This Script will take minimum 2 Arguments wherein 1st Argument has to be INC or RITM or CHG or CTASK Number and second argument onwards Servicenames or ContainerIDs with space inbetween.
+#                 Examples : ./Script_Heap_and_Thread_Dumps_ServiceName_Or_CID.sh INC1234 10966-USDigital-Common-int8_usgsspdocumentservice
+#                            ./Script_Heap_and_Thread_Dumps_ServiceName_Or_CID.sh INC12345  082c682e6b9c 31be3cd64708
+#                            ./Script_Heap_and_Thread_Dumps_ServiceName_Or_CID.sh INC5555 11244-GSSPJapan-Infra-int3_gsspconfigserver 082c682e6b9c 
+#notes           : 
+#1.1st Argument has to be INC or  RITM or CHG or CTASK or any random number starting with INC (ex.INC123)
+#2.You can give any combination of Servicenames and ContainerIDs from second Arg with spaces 
+#Example1 : ./Scriptname INC12345 ServiceName1 ServiceName2
+#Example2 : ./Scriptname INC12345 ContainerID1 ContainerID2
+#=============================================================================================
+find /metlife/archive/heapthread_dumps/ -type d -mtime +14 -exec rm -rf {} \; 2> /dev/null
+if [[ $1 == INC* ]] || [[ $1 == RITM* ]] || [[ $1 == CHG* ]] || [[ $1 == CTASK* ]]
+then
+cd /metlife/runtime/bundle/admin/ > /dev/null 2>&1
+if [[ `echo $?` == 0 ]]
+then
+source env.sh > /dev/null 2>&1
+fi
+today=$(date +%d-%m-%Y.%H.%M.%S)
+for input in "${@:2}"
+do
+if [[ $input == *"_"* ]] || [[ $input == *"-"* ]]
+then
+CIDLIST=$(docker ps -f name=$input -q)
+for CID in $CIDLIST
+do
+JAVAPID=$(docker exec $CID  pgrep java)
+if [ -z "$JAVAPID" ]
+then
+echo "\e[1;32m Java process is not running for $input-$CID hence no dumps generated \e[0m"
+else
+docker exec $CID jmap > /dev/null 2>&1
+if [[ `echo $?` == 1 ]]
+then
+mkdir  -p /metlife/archive/heapthread_dumps/$1/$input/$CID
+echo -e "\e[1;32m ==================== Generating HeapDump and ThreadDump for $input-$CID ==================== \e[0m"
+docker exec $CID jmap -dump:live,format=b,file=/tmp/$CID-HeapDump-$today.hprof $JAVAPID 2>&1
+docker cp $CID:/tmp/$CID-HeapDump-$today.hprof /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-HeapDump-$today.hprof
+echo -e "=================================================================\nHeapDump path : /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-HeapDump-$today.hprof"
+else
+echo -e "\e[1;32m Jmap is not installed for $input-$CID \e[0m"
+fi
+docker exec $CID jstack > /dev/null 2>&1
+if [[ `echo $?` == 1 ]]
+then
+for i in {1..3};do time=$(date +%d-%m-%Y.%H.%M.%S) ; docker exec $CID jstack $JAVAPID > /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-threadDump-$time.tdump 2>&1; echo "ThreadDump path : /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-threadDump-$time.tdump" ; cat /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-threadDump-$time.tdump >> /metlife/archive/heapthread_dumps/$1/$input/$CID/javacores.txt ; sleep 20 ; done
+/metlife/runtime/util/mustgather/yc -c /metlife/runtime/util/mustgather/ycconfig.yaml -p 1 -tdPath /metlife/archive/heapthread_dumps/$1/$input/$CID/javacores.txt -hdPath /metlife/archive/heapthread_dumps/$1/$input/$CID/$CID-HeapDump-$today.hprof -a $input-$CID
+cat /dev/null > /metlife/archive/heapthread_dumps/$1/$input/$CID/javacores.txt
+else
+echo -e "\e[1;32m Jstack is not installed for $input-$CID \e[0m"
+fi
+fi
+done
+else
+JAVAPID=$(docker exec $input  pgrep java)
+Appname=$(docker inspect -f '{{.Name}}' $input)
+if [ -z "$JAVAPID" ]
+then
+echo -e "\e[1;32m Java process is not running for $Appname-$input hence no dumps generated \e[0m"
+else
+docker exec $input jmap > /dev/null 2>&1
+if [[ `echo $?` == 1 ]]
+then
+mkdir  -p /metlife/archive/heapthread_dumps/$1$Appname/$input
+echo -e "\e[1;32m ==================== Generating HeapDump and ThreadDump for $Appname-$input ==================== \e[0m"
+docker exec $input jmap -dump:live,format=b,file=/tmp/$input-HeapDump-$today.hprof $JAVAPID 2>&1
+docker cp $input:/tmp/$input-HeapDump-$today.hprof /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-HeapDump-$today.hprof
+echo -e "=================================================================\nHeapDump path : /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-HeapDump-$today.hprof"
+else
+echo -e "\e[1;32m Jmap is not installed for $Appname-$input \e[0m"
+fi
+docker exec $input jstack > /dev/null 2>&1
+if [[ `echo $?` == 1 ]]
+then
+for i in {1..3};do time=$(date +%d-%m-%Y.%H.%M.%S) ; docker exec $input jstack $JAVAPID > /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-threadDump-$time.tdump 2>&1; echo "ThreadDump path : /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-threadDump-$time.tdump" ; cat /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-threadDump-$time.tdump >> /metlife/archive/heapthread_dumps/$1/$Appname/$input/javacores.txt ; sleep 20 ; done
+/metlife/runtime/util/mustgather/yc -c /metlife/runtime/util/mustgather/ycconfig.yaml -p 1 -tdPath /metlife/archive/heapthread_dumps/$1$Appname/$input/javacores.txt -hdPath /metlife/archive/heapthread_dumps/$1$Appname/$input/$input-HeapDump-$today.hprof -a $Appname-$input
+cat /dev/null > /metlife/archive/heapthread_dumps/$1$Appname/$input/javacores.txt
+else
+echo -e "\e[1;32m Jstack is not installed for $Appname-$input \e[0m"
+fi
+fi
+fi
+done
+
+else
+echo -e "\e[1;32m Please enter 1st Argument as INC or  RITM or CHG or CTASK or any random number starting with letters--> INC (ex.INC123) and give 2nd Argument onwards ServiceName or CID with space inbetween.                                                                  
+#Example1 : ./Scriptname INC12345 ServiceName1 ServiceName2
+#Example2 : ./Scriptname INC12345 ContainerID1 ContainerID2   \e[0m"
+fi
