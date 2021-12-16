@@ -1,1 +1,4 @@
-
+Init containers runs before application containers, if init conatimer fails then Pod restrt.--if policy=never then it will unsuccessful
+After completion of all lined up init cont**, it wil die itslef
+use case:
+init--create cert and use in app container and side cae conatiner pushing logs to AWS s3
