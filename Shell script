@@ -1,1 +1,30 @@
+Shell also test for file and directory types
+Test Meaning
+-s file Non empty file
+-f file Is File exist or normal file and not a directory
+-d dir Is Directory exist and not a file
+-w file Is writeable file
+-r file Is read-only file
+-x file Is file is executable
+Operator Meaning
+string1 = string2 string1 is equal to string2
+string1 != string2 string1 is NOT equal to string2
+string1 string1 is NOT NULL or not defined
+-n string1 string1 is NOT NULL and does exist
+-z string1 string1 is NULL and does exist
+
+if [ -d "/root/test2/" ]
+then
+        echo present
+else
+        echo nnot der
+fi
+===================
+root@1fb7ae1c0e1c:~/test# cat myscript2.sh
+#!/bin/bash
+if [ -z "$1" ]
+  then
+    echo "No argument supplied"
+fi
+=====================
 
