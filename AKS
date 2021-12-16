@@ -152,7 +152,36 @@ Start-Process $GrafanaURL
 
 # Scale the nginx deployment
 kubectl scale deployment nginx --replicas=15 -n nginx
+=========================================
+# Create Namespace for Grafana
+kubectl create namespace monitoring
+kubectl config set-context --current --namespace=monitoring
 
+# Add Helm repos / update Helm repos
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
+
+# Install Prometheus stack (which includes Grafana!)
+helm install monitor prometheus-community/kube-prometheus-stack --namespace monitoring
+cloud_user@43ab4ac5431c:~$ kubectl --namespace monitoring get pods -l "release=monitor"
+NAME                                                   READY   STATUS    RESTARTS   AGE
+monitor-kube-prometheus-st-operator-5c98b65c77-54b7z   1/1     Running   0          65s
+monitor-prometheus-node-exporter-2qd8g                 1/1     Running   0          66s
+monitor-prometheus-node-exporter-fcf57                 1/1     Running   0          65s
+monitor-prometheus-node-exporter-pkn8c                 1/1     Running   0          65s
+cloud_user@43ab4ac5431c:~$
+cloud_user@43ab4ac5431c:~$ kubectl get pods
+NAME                                                     READY   STATUS    RESTARTS   AGE
+alertmanager-monitor-kube-prometheus-st-alertmanager-0   2/2     Running   0          115s
+monitor-grafana-b9c974489-k4gvf                          3/3     Running   0          2m
+monitor-kube-prometheus-st-operator-5c98b65c77-54b7z     1/1     Running   0          2m
+monitor-kube-state-metrics-b557b4cdd-28n4k               1/1     Running   0          2m
+monitor-prometheus-node-exporter-2qd8g                   1/1     Running   0          2m1s
+monitor-prometheus-node-exporter-fcf57                   1/1     Running   0          2m
+monitor-prometheus-node-exporter-pkn8c                   1/1     Running   0          2m
+prometheus-monitor-kube-prometheus-st-prometheus-0       2/2     Running   0          115s
+cloud_user@43ab4ac5431c:~$
 
 
 
