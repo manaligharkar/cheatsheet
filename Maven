@@ -14,3 +14,4 @@ It is an XML file that contains information about the project and configuration 
 It contains default values for most projects. Examples for this is the build directory, which is target; the source directory, which is src/main/java; the test source directory, which is src/test/java; and so on. When executing a task or goal, Maven looks for the POM in the current directory. It reads the POM, gets the needed configuration information, then executes the goal.
 *D:\Software\Maven\apache-maven-3.8.3\conf\settings.xml--<localRepository>/path/to/local/repo</localRepository>
 The path to the local repository maven will use to store artifacts. --> Default: ${user.home}/.m2/repository
+##You can cheatsheet/Shell Scripts/MavenDependency delection script as per user request.
