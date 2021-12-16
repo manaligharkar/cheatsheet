@@ -1,0 +1,10 @@
+Link for offical cheatsheet by k8s :  https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+kubectl config current-context 
+Init conatiner-ssl cert configuartion/git , Sidecar--pushng logs to aws S3
+port forwrd for cluster-ip : https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
+*Encrypting and decrypting secrets:
+cloud_user@43ab4ac5431c:~$ echo -n 'username' | base64
+dXNlcm5hbWU=
+cloud_user@43ab4ac5431c:~$ echo `echo dXNlcm5hbWU= | base64 --decode`
+username
+cloud_user@43ab4ac5431c:~$
