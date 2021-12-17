@@ -51,7 +51,59 @@ my-app       NodePort    10.103.58.67   <none>        80:30933/TCP   7m18s
 $ kubectl patch service my-app -p '{"spec":{"selector":{"version":"v2.0.0"}}}'   -->this command will slect second replicaset to expose on nodeport.
 ===========================================================================================
 4)canary-->-->two deplymets-->Service will be having onely one lable and will have pods from both deplyments at same time.
-out of 9 pods--5 will be from old deplyment and 4 will be from new
+out of 6 pods--5 will be from old deplyment and 1 will be from new
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ curl http://10.103.186.177
+Host: my-app-v2-5d6c7554b6-6p4zk, Version: v2.0.0
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ curl http://10.103.186.177
+Host: my-app-v1-7fbf7d66fb-8s7pd, Version: v1.0.0
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ kubectl get  all
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/my-app-v1-7fbf7d66fb-547tb   1/1     Running   0          16s
+pod/my-app-v1-7fbf7d66fb-6q569   1/1     Running   0          16s
+pod/my-app-v1-7fbf7d66fb-7zssl   1/1     Running   0          16s
+pod/my-app-v1-7fbf7d66fb-8s7pd   1/1     Running   0          16s
+pod/my-app-v1-7fbf7d66fb-t7x8n   1/1     Running   0          16s
+pod/my-app-v2-5d6c7554b6-6p4zk   1/1     Running   0          21s
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        12d
+service/my-app       NodePort    10.103.186.177   <none>        80:31022/TCP   16s
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/my-app-v1   5/5     5            5           16s
+deployment.apps/my-app-v2   1/1     1            1           21s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/my-app-v1-7fbf7d66fb   5         5         5       16s
+replicaset.apps/my-app-v2-5d6c7554b6   1         1         1       21s
+----------------------------------------------------------------
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ kubectl scale --replicas=5 deployment my-app-v2
+deployment.apps/my-app-v2 scaled
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ kubectl scale --replicas=1 deployment my-app-v1
+deployment.apps/my-app-v1 scaled
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/canary/native$ kubectl get  all
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/my-app-v1-7fbf7d66fb-t7x8n   1/1     Running   0          4m46s
+pod/my-app-v2-5d6c7554b6-2w77w   1/1     Running   0          24s
+pod/my-app-v2-5d6c7554b6-6p4zk   1/1     Running   0          4m51s
+pod/my-app-v2-5d6c7554b6-779bd   1/1     Running   0          24s
+pod/my-app-v2-5d6c7554b6-mn28r   1/1     Running   0          24s
+pod/my-app-v2-5d6c7554b6-rd279   1/1     Running   0          24s
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        12d
+service/my-app       NodePort    10.103.186.177   <none>        80:31022/TCP   4m46s
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/my-app-v1   1/1     1            1           4m46s
+deployment.apps/my-app-v2   5/5     5            5           4m51s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/my-app-v1-7fbf7d66fb   1         1         1       4m46s
+replicaset.apps/my-app-v2-5d6c7554b6   5         5         5       4m51s
+-----------------------------------------
+later you can dlete old deplyment --after qa teams testing--regarding which url to get--istio service mesh will be used.
 
 
 
