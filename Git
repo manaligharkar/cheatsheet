@@ -1,1 +1,30 @@
-
+Branching strategies: https://nvie.com/posts/a-successful-git-branching-model/
+The central repo holds two main branches with an infinite lifetime:
+master
+develop
+The different types of branches we may use are:
+Feature branches
+Release branches
+Hotfix branches
+--------------------------------------------------
+#Feature branches 
+May branch off from:
+develop
+Must merge back into:
+develop
+Branch naming convention:
+anything except master, develop, release-*, or hotfix-*
+#Release branches 
+May branch off from:
+develop
+Must merge back into:
+develop and master
+Branch naming convention:
+release-*
+#Hotfix branches 
+May branch off from:
+master
+Must merge back into:
+develop and master
+Branch naming convention:
+hotfix-*
