@@ -104,6 +104,8 @@ replicaset.apps/my-app-v1-7fbf7d66fb   1         1         1       4m46s
 replicaset.apps/my-app-v2-5d6c7554b6   5         5         5       4m51s
 -----------------------------------------
 later you can dlete old deplyment --after qa teams testing--regarding which url to get--istio service mesh will be used.
+kubectl delete deployment.apps/my-app-v1
+===========================================================
 
 
 
