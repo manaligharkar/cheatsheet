@@ -1,0 +1,8 @@
+Defenetion::A Deployment provides declarative updates for Pods and ReplicaSets.
+You describe a desired state in a Deployment, and the Deployment Controller changes the actual state to the desired state at a controlled rate.
+You can define Deployments to create new ReplicaSets, or to remove existing Deployments and adopt all their resources with new Deployments.
+================================================================
+https://github.com/DeekshithSN/kubernetes/tree/master/deployment-strategies
+1)rolling update 2)recreate--include downtime 3)blue/green--2 versions at thesame time/tester and users 4)canary--few replica with old and max will replicas new.
+
+
