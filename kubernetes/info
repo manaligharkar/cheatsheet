@@ -8,3 +8,9 @@ dXNlcm5hbWU=
 cloud_user@43ab4ac5431c:~$ echo `echo dXNlcm5hbWU= | base64 --decode`
 username
 cloud_user@43ab4ac5431c:~$
+=========================================
+#Ok, so now that we're tired of typing commands out, let's enable bash auto-complete of our kubectl commands
+sudo apt-get install -y bash-completion
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+source ~/.bashrc
+=====================================================
