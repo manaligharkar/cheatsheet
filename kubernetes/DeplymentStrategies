@@ -50,6 +50,8 @@ my-app       NodePort    10.103.58.67   <none>        80:30933/TCP   7m18s
 
 $ kubectl patch service my-app -p '{"spec":{"selector":{"version":"v2.0.0"}}}'   -->this command will slect second replicaset to expose on nodeport.
 ===========================================================================================
+4)canary-->-->two deplymets-->Service will be having onely one lable and will have pods from both deplyments at same time.
+out of 9 pods--5 will be from old deplyment and 4 will be from new
 
 
 
