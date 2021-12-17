@@ -16,11 +16,40 @@ my-app-7fbf7d66fb   0         0         0       16m
 my-app-855d9644b    5         5         5       8m25s
 $ kubectl rollout undo deployment.apps/my-app
 deployment.apps/my-app rolled back
+===========================================================================================
 2)Recreate
 spec:
   replicas: 3
   strategy:
     type: Recreate
 Note: application will be down till second set of pod fully comes up.
+===========================================================================================
+3)Blue-Green-->two deplyments-->one service NodePort and other one clusterIp.
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/blue-green/single-service$ more app-v1.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+
+  # Note here that we match both the app and the version
+  selector:
+    app: my-app
+    version: v1.0.0
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/blue-green/single-service$ kubectl get svc
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP        12d
+my-app       NodePort    10.103.58.67   <none>        80:30933/TCP   7m18s
+
+$ kubectl patch service my-app -p '{"spec":{"selector":{"version":"v2.0.0"}}}'   -->this command will slect second replicaset to expose on nodeport.
+===========================================================================================
+
 
 
