@@ -4,5 +4,23 @@ You can define Deployments to create new ReplicaSets, or to remove existing Depl
 ================================================================
 https://github.com/DeekshithSN/kubernetes/tree/master/deployment-strategies
 1)rolling update 2)recreate--include downtime 3)blue/green--2 versions at thesame time/tester and users 4)canary--few replica with old and max will replicas new.
+1)Rolling update --> default
+$ kubectl rollout history deployment.apps/my-app
+deployment.apps/my-app
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+cloud_user@43ab4ac5431c:~/kubernetes/deployment-strategies/rolling-update$ kubectl get replicasets.apps
+NAME                DESIRED   CURRENT   READY   AGE
+my-app-7fbf7d66fb   0         0         0       16m
+my-app-855d9644b    5         5         5       8m25s
+$ kubectl rollout undo deployment.apps/my-app
+deployment.apps/my-app rolled back
+2)Recreate
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+Note: application will be down till second set of pod fully comes up.
 
 
