@@ -42,6 +42,7 @@ cloud_user@43ab4ac5431c:~/myhelm$ helm install example  mchart1 --set service.ty
 helm  list
 kubectl get all
 source <(helm completion bash)
+helm completion bash > /etc/bash_completion.d/helm
 ===================================================
 https://artifacthub.io/
 =================================================================================
