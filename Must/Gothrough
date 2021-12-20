@@ -15,4 +15,14 @@ etcd--acts like databse--stores values of cluster is no-sql database key-value p
  --> worker1 worker2 worker3
 worker--kubelet/crE(container runtime engine)/kube-proxy
 =================================================
+==============
+merge/rebase-->designed for same purpose tahts is to integrate one branch to another branch, But they do it in diffrent ways
+If i m working on new feature peoject on dedicated branch and one of my team member does commit on develop branch and that new commit is relevant to feature which i am working on then i would need to incororate new commits my feature branch.
+Merge--new merge comit on my feature-thats ties historie of both braches
+Rebase--it moves feature branch on tip of commit of devop branch
+it moves entire feature brach to begin on tip of development branch incorporting all new commits.--clean project history. 
+Git sqaush--> cmbining commits --that can be achive with rebase --interactive--rewite repo history
+master--prod code+develop-preprod code/
+new feature--create brach from dev brach---pul crequest and thats is merged into dev bracnch nad that feaute branch will be deleted
+--->release/hotfix/feature
 
