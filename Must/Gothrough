@@ -1,1 +1,16 @@
 Helm-Mock--https://www.youtube.com/watch?v=kGWTovo8tRg&list=PL8klaCXyIuQ6DCqQoeAiTOdcvucm3U97p
+
+k8s Architecture:
+Redundancy, deploy rplicas on multiple hosts--So managing is done by k8s
+Orchestion--desired/current
+dirrenece-->swarm/k8s--> swarm is basic , rollbase access control ,  cannnot automaticaly scale up instances
+
+
+
+master -> apiserver/etcd/scheduler/controller
+kubectl --> talk to apiservr, scheduler--checks node avaibilty as per requiremet/due to taint defined on master/work wil b assioned on 
+worker node,duty of controller is to see desired state is acheived or not
+etcd--acts like databse--stores values of cluster is no-sql database key-value pair
+
+ --> worker1 worker2 worker3
+worker--kubelet/crE(container runtime engine)/kube-proxy
