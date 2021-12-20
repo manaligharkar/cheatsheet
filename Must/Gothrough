@@ -1,4 +1,6 @@
 Helm-Mock--https://www.youtube.com/watch?v=kGWTovo8tRg&list=PL8klaCXyIuQ6DCqQoeAiTOdcvucm3U97p
+Devops Girl -Mock interview: https://www.youtube.com/watch?v=Z_bbozP6ZW4&list=PLLYW3zEOaqlLShAk9pd4FQ34KOpY7EJAq&index=6
+
 
 k8s Architecture:
 Redundancy, deploy rplicas on multiple hosts--So managing is done by k8s
