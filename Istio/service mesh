@@ -108,3 +108,13 @@ server: istio-envoy
 date: Wed, 22 Dec 2021 20:15:02 GMT
 x-envoy-upstream-service-time: 1222
 ----------------------------
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-02-90891441b7f4)$ istioctl profile list
+Istio configuration profiles:
+    default
+    demo
+    empty
+    external
+    minimal
+    openshift
+    preview
+    remote
