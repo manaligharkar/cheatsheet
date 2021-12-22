@@ -33,3 +33,31 @@ student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$ kubec
 NAME       READY   STATUS    RESTARTS   AGE   IP           NODE                                     NOMINATED NODE   READINESS GATES
 mypython   1/1     Running   0          24s   10.104.0.4   gke-central-default-pool-0909f315-444c   <none>           <none>
 student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$
+----------------------------------------------------
+if you describe master details--u can see Taint--noSchedule --which is not allowing pods to get create on Master
+YAml file to assign pod on master
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+  nodeSelector:
+    kubernetes.io/hostname: kubernetes-master
+    -------------------------------------------------------------
+#You add a taint to a node using kubectl taint. For example,
+kubectl taint nodes node1 key1=value1:NoSchedule
+-------------------------------------------------------
+To remove the taint added by the command above, you can run:
+kubectl taint nodes node1 key1=value1:NoSchedule-
+--------------------------------
+
