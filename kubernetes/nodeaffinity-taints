@@ -1,1 +1,35 @@
 https://www.youtube.com/watch?v=IB8FRhJnO3Q&list=PLLYW3zEOaqlLrc4VGtUuInis1N30e3PIm&index=12
+kubectl get nodes --show-labels
+kubectl describe node nodename
+To assign labe to node:
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$ kubectl label nodes gke-central-default-pool-0909f315-444c size=medium
+node/gke-central-default-pool-0909f315-444c labeled
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$
+---------------------------------------------------
+$ kubectl get node -l size=medium
+NAME                                     STATUS   ROLES    AGE   VERSION
+gke-central-default-pool-0909f315-444c   Ready    <none>   18h   v1.21.6-gke.1500
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$
+-------------------------------------------------------------------------
+#NodeSelector and node affinity -->are property of Pods which attract them to set of nodes
+#Taints allow nodes to repel set of pods
+#tolerations r applied to pods--allow pod to schedule onto nodes matching taints
+
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$ cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypython
+spec:
+  containers:
+    - name: mypython
+      image: deekshithsn/python-web-app
+  nodeSelector:
+    size: medium
+    ---------------------------------------------------------
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$ kubectl apply -f pod.yaml
+pod/mypython created
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$ kubectl get pod -owide
+NAME       READY   STATUS    RESTARTS   AGE   IP           NODE                                     NOMINATED NODE   READINESS GATES
+mypython   1/1     Running   0          24s   10.104.0.4   gke-central-default-pool-0909f315-444c   <none>           <none>
+student_00_480e5e6cd9d0@cloudshell:~/.kube (qwiklabs-gcp-04-86554bd6f4f2)$
