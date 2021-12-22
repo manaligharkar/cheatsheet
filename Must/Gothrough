@@ -27,4 +27,16 @@ Git sqaush--> cmbining commits --that can be achive with rebase --interactive--r
 master--prod code+develop-preprod code/
 new feature--create brach from dev brach---pul crequest and thats is merged into dev bracnch nad that feaute branch will be deleted
 --->release/hotfix/feature
+=================================
+helm chart-promethesu
+serviceaccount/namespace/role/stateful/services/persistance volumes--objects
+what r operater-->Operator use custome resouce defenation--their own custom script--they take care of pvc/pv atumaticly, regular backup, if u want to add configuration--so no need bring down pod
+So operaor wil continusly motor chnages in confuration and apply 
+offical oprtor--good to use--
+https based app--end point /metric /health-which doen nt need authorization, if secure jw token, if data coming as json, we need to chnage data --many exporter do that
+json exporter wil take input json and it convert which promQL wil analyze
+types of metrics in prom--> 4->1.guess 2.count 3.histogram 4.summary
+-----------------------------
+resource quota limit resouces to namespace--
+Need to read--resouce quota/rollbase access
 
