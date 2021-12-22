@@ -1,0 +1,10 @@
+$ kubectl get svc -n istio-systemNAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
+grafana                ClusterIP      10.108.8.250    <none>        3000/TCP                                     2m22s
+istio-ingressgateway   LoadBalancer   10.108.11.145   35.193.77.1   15021:32304/TCP,80:30108/TCP,443:30500/TCP   29m
+istiod                 ClusterIP      10.108.4.176    <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        29m
+jaeger-collector       ClusterIP      10.108.12.172   <none>        14268/TCP,14250/TCP,9411/TCP                 2m16s
+kiali                  ClusterIP      10.108.6.5      <none>        20001/TCP,9090/TCP                           2m12s
+prometheus             ClusterIP      10.108.1.43     <none>        9090/TCP                                     2m9s
+tracing                ClusterIP      10.108.0.94     <none>        80/TCP,16685/TCP                             2m17s
+zipkin                 ClusterIP      10.108.15.226   <none>        9411/TCP                                     2m17s
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1/samples/addons (qwiklabs-gcp-01-cc12837ae905)$
