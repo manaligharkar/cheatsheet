@@ -1,4 +1,110 @@
-version 1.4
+version 1.21
 traffice management
 security
 observability
+
+Nana-->https://www.youtube.com/watch?v=voAyroDb6xk
+https://istio.io/latest/docs/setup/getting-started/#download
+
+Installation: 
+Installing the Istio on GKE Add-On with Kubernetes Engine
+
+$ curl -L https://istio.io/downloadIstio | sh -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   102  100   102    0     0    542      0 --:--:-- --:--:-- --:--:--   539
+100  4549  100  4549    0     0   8714      0 --:--:-- --:--:-- --:--:--  8714
+
+Downloading istio-1.12.1 from https://github.com/istio/istio/releases/download/1.12.1/istio-1.12.1-linux-amd64.tar.gz ...
+
+Istio 1.12.1 Download Complete!
+
+Istio has been successfully downloaded into the istio-1.12.1 folder on your system.
+
+Next Steps:
+See https://istio.io/latest/docs/setup/install/ to add Istio to your Kubernetes cluster.
+
+To configure the istioctl client tool for your workstation,
+add the /home/student_00_45914c88d98e/istio-1.12.1/bin directory to your environment path variable with:
+         export PATH="$PATH:/home/student_00_45914c88d98e/istio-1.12.1/bin"
+
+Begin the Istio pre-installation check by running:
+         istioctl x precheck
+
+Need more information? Visit https://istio.io/latest/docs/setup/install/
+student_00_45914c88d98e@cloudshell:~ (qwiklabs-gcp-01-cc12837ae905)$ ls
+istio-1.12.1  README-cloudshell.txt
+student_00_45914c88d98e@cloudshell:~ (qwiklabs-gcp-01-cc12837ae905)$ cd istio-1.12.1
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ ls
+bin  LICENSE  manifests  manifest.yaml  README.md  samples  tools
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ export PATH=$PWD/bin:$PATH
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ istioctl install
+This will install the Istio 1.12.1 default profile with ["Istio core" "Istiod" "Ingress gateways"] components into the cluster. Proceed? (y/N) y
+✔ Istio core installed                
+✔ Istiod installed                                                           
+✔ Ingress gateways installed                                                                         
+✔ Installation complete                                                                                                                         Making this installation the default for injection and validation.
+
+Thank you for installing Istio 1.12.  Please take a few minutes to tell us about your install/upgrade experience!  https://forms.gle/FegQbc9UvePd4Z9z7
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$
+
+---------------------------
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ kubectl get ns
+NAME              STATUS   AGE
+default           Active   11m
+istio-system      Active   6m11s
+kube-node-lease   Active   11m
+kube-public       Active   11m
+kube-system       Active   11m
+----------------------------
+$ kubectl get pod -n istio-system
+NAME                                  READY   STATUS    RESTARTS   AGE
+istio-ingressgateway-8c48d875-5cvjh   1/1     Running   0          6m20s
+istiod-58d79b7bff-bnbqc               1/1     Running   0          6m33s
+---------------------------------------------
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ istioctl version
+client version: 1.12.1
+control plane version: 1.12.1
+data plane version: 1.12.1 (1 proxies)
+------------------
+istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml
+kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ kubectl get pod
+NAME                             READY   STATUS    RESTARTS   AGE
+details-v1-757dcdb6d5-z64dq      2/2     Running   0          39s
+productpage-v1-f477f9dfd-hxbb5   2/2     Running   0          34s
+ratings-v1-77d5d5c7bf-trmhk      2/2     Running   0          38s
+reviews-v1-7446f8dd6b-x82bz      2/2     Running   0          36s
+reviews-v2-69d8dcb697-qc2xr      2/2     Running   0          36s
+reviews-v3-6854c5f776-hgbjc      2/2     Running   0          35s
+-----------------------------
+
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+gateway.networking.istio.io/bookinfo-gateway created
+virtualservice.networking.istio.io/bookinfo created
+-------------------------------------
+$ kubectl get svc
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+details       ClusterIP   10.108.10.208   <none>        9080/TCP   119s
+kubernetes    ClusterIP   10.108.0.1      <none>        443/TCP    24m
+productpage   ClusterIP   10.108.12.113   <none>        9080/TCP   114s
+ratings       ClusterIP   10.108.1.185    <none>        9080/TCP   118s
+reviews       ClusterIP   10.108.9.208    <none>        9080/TCP   116s
+-------------------------------------
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ kubectl get gateway
+NAME               AGE
+bookinfo-gateway   2m4s
+----------------------------
+$ kubectl get svc istio-ingressgateway -n istio-system
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                      AGE
+istio-ingressgateway   LoadBalancer   10.108.11.145   35.193.77.1   15021:32304/TCP,80:30108/TCP,443:30500/TCP   22m
+student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$
+---------------------
+$ curl -I http://35.193.77.1/productpage
+HTTP/1.1 200 OK
+content-type: text/html; charset=utf-8
+content-length: 5179
+server: istio-envoy
+date: Wed, 22 Dec 2021 20:15:02 GMT
+x-envoy-upstream-service-time: 1222
+----------------------------
