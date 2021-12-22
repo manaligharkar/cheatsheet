@@ -38,5 +38,11 @@ json exporter wil take input json and it convert which promQL wil analyze
 types of metrics in prom--> 4->1.guess 2.count 3.histogram 4.summary
 -----------------------------
 resource quota limit resouces to namespace--
-Need to read--resouce quota/rollbase access
+Need to read--resouce quota/rollbase access/operator-alertmanager
+**Role Based Access Control in Kubernetes(RBAC)
+Role:get,list
+resources:pod,volume
+2 types--
+clusterrolebinding more powerful as they apply to all namespaces in cluster
+rolebinding--its specific to specific namespace.-->https://www.youtube.com/watch?v=BLktpM--0jA
 
