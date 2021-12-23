@@ -68,6 +68,8 @@ control plane version: 1.12.1
 data plane version: 1.12.1 (1 proxies)
 ------------------
 istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml
+or kubectl label namespace default istio-injection=enabled instead of "kube-inject"
+
 kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
 student_00_45914c88d98e@cloudshell:~/istio-1.12.1 (qwiklabs-gcp-01-cc12837ae905)$ kubectl get pod
 NAME                             READY   STATUS    RESTARTS   AGE
