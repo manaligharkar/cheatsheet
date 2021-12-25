@@ -1,4 +1,8 @@
 Jenkins 2.319.1
+Jenkins Pipeline-->
+commitbasedJob-Configure Job -Build trgger-Githubhook for gitscm polling-->then come to github for confuguring webhook.
+
+
 To see defaults variable-->http://IPofJenkins:8080/env-vars.html/ ex>BUILD_URL
 *Multibranch pipeline --scans braches for jenkins files in given repo url:https://github.com/manaligharkar/manalitest1.git and perform build as per chnages at given time periodically defined
 in the configuration.
