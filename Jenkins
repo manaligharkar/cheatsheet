@@ -43,6 +43,7 @@ stage('Quality Gate Status Check'){
 		  
                  	}
 ================================
+For K8s+jenkins pipeline--must watch--> https://www.youtube.com/watch?v=adG0vq5boL8&t=5038s
 
 To see defaults variable-->http://IPofJenkins:8080/env-vars.html/ ex>BUILD_URL
 *Multibranch pipeline --scans braches for jenkins files in given repo url:https://github.com/manaligharkar/manalitest1.git and perform build as per chnages at given time periodically defined
