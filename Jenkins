@@ -26,6 +26,23 @@ pipeline {
 =====================================
 Regarding Shared Libraries--watch-- https://www.youtube.com/watch?v=bGDyGH13k1g
 =====================================
+Next step is add sonar stage for static code qulity check-->https://github.com/DeekshithSN/sample-web-application/tree/sonar-jenkins
+stage('Quality Gate Status Check'){
+                  steps{
+                      script{
+			      withSonarQubeEnv('sonarserver') { 
+			      sh "mvn clean sonar:sonar"
+                       	     	}
+			      timeout(time: 1, unit: 'HOURS') {
+			      def qg = waitForQualityGate()
+				      if (qg.status != 'OK') {
+					   error "Pipeline aborted due to quality gate failure: ${qg.status}"
+				      }
+                    		}
+		    	    sh "mvn clean install"
+		  
+                 	}
+================================
 
 To see defaults variable-->http://IPofJenkins:8080/env-vars.html/ ex>BUILD_URL
 *Multibranch pipeline --scans braches for jenkins files in given repo url:https://github.com/manaligharkar/manalitest1.git and perform build as per chnages at given time periodically defined
