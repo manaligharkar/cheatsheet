@@ -4,3 +4,4 @@ created various manifest.yml files , network policies
 worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
 Regading jenkis
+Eureka service--is for registering service IP chnages regostering--so that all microservices can commect with each other with updated IPs.
