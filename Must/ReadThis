@@ -5,6 +5,7 @@ worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
 Regading jenkis: worte jenkins pipeline--used docker agent/mavne/gradle/k8s/, confured email, sonar qualitycheck into jenkins files.
 
+alos wrote dockerfiles
 
 
 Eureka service--is for registering service IP chnages regostering--so that all microservices can commect with each other with updated IPs.--service discovery
