@@ -1,5 +1,5 @@
 From last 5 yrs-in DevOps--tools used--k8s/docker/AKS/jenkins/git/prometheus/grafana/shell scripting
-K8s--either i preapre my own helm chart or sometime drect;y pull from artifaoryhub and modified according to need
+K8s--either i preapre my own helm chart or sometime drect;y pull from artifaoryhub and modified according to need,persistance idenity
 created various manifest.yml files , network policies,statefulset deplyments--fr sticky identity fr databases pods
 worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
