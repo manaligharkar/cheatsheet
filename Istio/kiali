@@ -8,3 +8,22 @@ prometheus             ClusterIP      10.108.1.43     <none>        9090/TCP    
 tracing                ClusterIP      10.108.0.94     <none>        80/TCP,16685/TCP                             2m17s
 zipkin                 ClusterIP      10.108.15.226   <none>        9411/TCP                                     2m17s
 student_00_45914c88d98e@cloudshell:~/istio-1.12.1/samples/addons (qwiklabs-gcp-01-cc12837ae905)$
+================================
+istio clasifies telemety into 3 types: 1.metric--count of request/resposnse--Mixter adapter collect istio telmetry and provd to prometheus
+2.tracespan 3.logentry-coming from proxies
+prometheus-->kialy/grafana--promtheus has pullmodel-- it collects data from all endpoints /target show endpinnt url
+promets is scarping thst URL to get metrics from envoy proxy pod.
+zipkin-jaeger
+elastich serach-Kibana-vusulizing log entries and aggreagating data
+Kiali--Overviw page show namespace based--whts running
+graph--services commnunication, also show grag/colurs-also time when problem occured
+workload-matrics , trafic
+canary--percagewise trficc= betwen diff version-->>graph--requests percentage
+istio config--shows percabtahe/yml editable
+
+Grafabna--isto mesh dashboad shows all services data--request volume/success rate/response/
+service dashboad--which traffic is secured, alos u can see 503/200 response code
+=========================
+
+
+
