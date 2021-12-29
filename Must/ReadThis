@@ -1,6 +1,8 @@
 From last 5 yrs-in DevOps--tools used--k8s/docker/AKS/jenkins/git/prometheus/grafana/shell scripting
 K8s--either i preapre my own helm chart or sometime drect;y pull from artifaoryhub and modified according to need,persistance idenity
 created various manifest.yml files , network policies,statefulset deplyments--fr sticky identity fr databases pods--write-headless svc and read clusterIP
+headless--as we want to assign to specifc pod, clusterIP-NOne,user selctor fr pod selection
+
 worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
 Regading jenkis: worte jenkins pipeline--used docker agent/mavne/gradle/k8s/, confured email, sonar qualitycheck into jenkins files.
@@ -9,3 +11,5 @@ alos wrote dockerfiles
 
 
 Eureka service--is for registering service IP chnages regostering--so that all microservices can commect with each other with updated IPs.--service discovery
+k8s-->
+sevice manifest having lectory--key:value nad in deplyment--spec--pod-->label key:value
