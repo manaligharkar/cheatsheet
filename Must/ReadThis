@@ -6,7 +6,8 @@ headless--as we want to assign to specifc pod, clusterIP-NOne,user selctor fr po
 worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
 Regading jenkis: worte jenkins pipeline--used docker agent/mavne/gradle/k8s/, confured email, sonar qualitycheck into jenkins files.
-
+connecting jenkins with kubernetes cluster
+multibranch
 alos wrote dockerfiles
 
 
