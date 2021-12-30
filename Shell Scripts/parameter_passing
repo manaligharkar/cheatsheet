@@ -1,0 +1,3 @@
+$@-->listing of arguments passed
+$0 --> name of script
+$#-->number f arguments passed.
