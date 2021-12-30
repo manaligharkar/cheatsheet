@@ -119,6 +119,9 @@ toYaml --> to copy many lines from values.yaml
 Use case for Datree :  helm datree test mchart1   ==> only need to suppy chart directory ie mychart1
 ===============================================
 to use diffrent namespaces and values.yaml user following command: helm create -n mynamespace -d testchartdir/dev-values.yaml testchartdir --create-namespace
+======================
+Helm 2 and 3 diff--> Tiiler removed in helm 3 and rolbassed access control k8s takes care of it.,and 3-way strategic merge in helm3--chnages in current object will also taken into account
+while doing upgrade or rollback.
 
 
 
