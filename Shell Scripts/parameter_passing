@@ -1,4 +1,4 @@
 $@-->listing of arguments passed
 $0 --> name of script
 $#-->number f arguments passed.
-sed -i '/^$/d' file.txt  -->to delete emply lines also u can use grep "/S" filename
+sed -i '/^$/d' file.txt  -->to delete emply lines also u can use grep "/S" filename also $awk NF filename --> wil print all nonblank lines
