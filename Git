@@ -37,7 +37,7 @@ $ ls -lta
 total 11
 drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 ./
 -rw-r--r-- 1 mgharkar 1049089 130 Dec 31 01:22 config
-drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 objects/
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 objects/   --> it contain all commits and all
 -rw-r--r-- 1 mgharkar 1049089  23 Dec 31 01:22 HEAD
 drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 refs/
 drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 info/
@@ -48,4 +48,16 @@ drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 ../
 The .git folder contains all the information that is necessary for your project in version control and all the information about commits, remote repository address, etc. 
 All of them are present in this folder. 
 It also contains a log that stores your commit history so that you can roll back to history.
+mgharkar@DIN22008500 MINGW64 ~/Documents/test1/.git/objects (GIT_DIR!)
+$ ls -lrt
+total 0
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:22 pack/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:22 info/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:30 64/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:30 84/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:30 6a/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:33 4b/
+drwxr-xr-x 1 mgharkar 1049089 0 Dec 31 01:33 a7/
+
+
 ===========================================================================
