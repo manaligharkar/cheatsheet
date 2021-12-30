@@ -28,3 +28,24 @@ Must merge back into:
 develop and master
 Branch naming convention:
 hotfix-*
+==================================
+mgharkar@DIN22008500 MINGW64 ~/Documents/test1 (master)
+$ cd .git/
+
+mgharkar@DIN22008500 MINGW64 ~/Documents/test1/.git (GIT_DIR!)
+$ ls -lta
+total 11
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 ./
+-rw-r--r-- 1 mgharkar 1049089 130 Dec 31 01:22 config
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 objects/
+-rw-r--r-- 1 mgharkar 1049089  23 Dec 31 01:22 HEAD
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 refs/
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 info/
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 hooks/
+-rw-r--r-- 1 mgharkar 1049089  73 Dec 31 01:22 description
+drwxr-xr-x 1 mgharkar 1049089   0 Dec 31 01:22 ../
+.git contains all information required for version control. If you want to clone your repo, copy .git is enough.
+The .git folder contains all the information that is necessary for your project in version control and all the information about commits, remote repository address, etc. 
+All of them are present in this folder. 
+It also contains a log that stores your commit history so that you can roll back to history.
+===========================================================================
