@@ -1,0 +1,9 @@
+Node Exporter is a Prometheus exporter for server level and OS level metrics with configurable metric collectors. 
+It helps us in measuring various server resources such as RAM, disk space, and CPU utilization. 
+Node exporter is a good solution to collect all the Linux server related metrics and statistics for monitoring.
+
+Here, you will learn how to install the node exporter manually as well by Ansible playbook on a Linux server to export all node level metrics to the Prometheus server.
+
+Prerequisites
+Prometheus server to be up and running to receive Node Exporter metrics.
+In the inbound rules of the server firewall, port 9100 should be opened for Prometheus server IP as Prometheus reads metrics on this port.
