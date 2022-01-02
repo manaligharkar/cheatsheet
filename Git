@@ -1,3 +1,4 @@
+For .gitignore-- refer-->  https://www.youtube.com/watch?v=nheGzyk7--8&list=PLriKzYyLb28nCh3jJLROcYBvj7ZO0l-3G&index=8
 Branching strategies: https://nvie.com/posts/a-successful-git-branching-model/
 The central repo holds two main branches with an infinite lifetime:
 master
@@ -160,6 +161,8 @@ mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
 $ git log --oneline
 670c6bf (HEAD -> master) added p2
 34679e0 1st p1
-
+========================
+to remove cached
+#git rm --cached filename
 
 
