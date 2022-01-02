@@ -109,7 +109,50 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 
 mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
-=========================================================================================================
+==================================================git revert=============================================
+note--revert--adds new commit by reverting commit mentioned.
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ git log --oneline
+670c6bf (HEAD -> master) added p2
+34679e0 1st p1
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ git revert HEAD
+Removing p2
+[master 33e661e] Revert "added p2"
+ Committer: Gharkar <manali.gharkar@capgemini.com>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
 
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 p2
+
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ ls
+p1
+
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ git log --oneline
+33e661e (HEAD -> master) Revert "added p2"
+670c6bf added p2
+34679e0 1st p1
+
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$
+
+========================================
 
 
