@@ -149,10 +149,17 @@ mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
 $ git status
 On branch master
 nothing to commit, working tree clean
+=================================
+git revert commitID -->will create new commit also it doesnt touch other commits --onn;y reverts commitwhich u mention
+git reset --hard 670c6bf --> it wil go back to that commit , removing all commits til that head.--Need to b careful
+mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
+$ git reset --hard 670c6bf
+HEAD is now at 670c6bf added p2
 
 mgharkar@DIN22008500 MINGW64 ~/Desktop/Appr/test2 (master)
-$
+$ git log --oneline
+670c6bf (HEAD -> master) added p2
+34679e0 1st p1
 
-========================================
 
 
