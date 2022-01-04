@@ -25,6 +25,14 @@ pipeline {
 }
 =====================================
 Regarding Shared Libraries--watch-- https://www.youtube.com/watch?v=bGDyGH13k1g
+Its concept of having common pipeline code for reusability in multiple other pipeleine.
+ex:maven code is common fr most app
+directory structure in jenkins repo -which u wl define in Manage jenkins-configure system-->global shared librarry
+--vars  : having .groovy
+--src
+--resources
+---In jenkins file--> define explicitly @Librarry: and then in steps
+Example used here is finding Warning count from Maven logs.
 =====================================
 Next step is add sonar stage for static code qulity check-->https://github.com/DeekshithSN/sample-web-application/tree/sonar-jenkins
 stage('Quality Gate Status Check'){
