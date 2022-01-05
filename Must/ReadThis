@@ -14,3 +14,8 @@ alos wrote dockerfiles
 Eureka service--is for registering service IP chnages regostering--so that all microservices can commect with each other with updated IPs.--service discovery
 k8s-->
 sevice manifest having lectory--key:value nad in deplyment--spec--pod-->label key:value
+
+================
+datree cli tool for -->yaml validation,schema validation,policy check--image tag/liveness probs/cpu menry reservations
+Datree, which helps in identifying misconfigurations in Kubernetes manifest files or helm charts—an excellent fit for CI pipelines. 
+=================
