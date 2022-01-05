@@ -1,9 +1,49 @@
-Managing a GKE Multi-tenant Cluster with Namespaces
-1 hour 15 minutes
-Free
-GSP766
-Google Cloud Self-Paced Labs
+Create a ResourceQuota
+Here is the configuration file for a ResourceQuota object:
 
+admin/resource/quota-pod.yaml Copy admin/resource/quota-pod.yaml to clipboard
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pod-demo
+spec:
+  hard:
+    pods: "2"
+Create the ResourceQuota:
+
+To apply quto to namespace-->to allow only 2 pod creation
+#kubectl apply -f https://k8s.io/examples/admin/resource/quota-pod.yaml --namespace=quota-pod-example
+#kubectl get resourcequota pod-demo --namespace=quota-pod-example --output=yaml
+=====================================================
+kind: LimitRange
+min and max limits and apply usig --namespace==
+====
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-min-max-demo-lr
+spec:
+  limits:
+  - max:
+      cpu: "800m"
+    min:
+      cpu: "200m"
+    type: Container
+    =================
+apiVersion: v1
+kind: Pod
+metadata:
+  name: constraints-cpu-demo
+spec:
+  containers:
+  - name: constraints-cpu-demo-ctr
+    image: nginx
+    resources:
+      limits:
+        cpu: "800m"
+      requests:
+        cpu: "500m"
+        ==============================
 Overview
 When considering cost optimization solutions for any Google Cloud infrastructure built around Google Kubernetes Engine (GKE) clusters, it's important to ensure that you're making effective use of the resources that are being billed. A common misstep is assigning a one to one ratio of users or teams to clusters, resulting in cluster proliferation.
 
