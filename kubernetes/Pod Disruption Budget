@@ -1,0 +1,25 @@
+Service Accounts
+Authentication modules include client certificates, password, and plain tokens, bootstrap tokens, and JSON Web Tokens (used for service accounts).
+
+Pod Disruption Budget
+to get node from not ready to schedule to normal
+#kubectl uncordon nodename
+
+An Application Owner can create a PodDisruptionBudget object (PDB) for each application.
+A PDB limits the number pods of a replicated application that are down simultaneously from voluntary disruptions. 
+For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. 
+A web front end might want to ensure that the number of replicas serving load never falls below a certain percentage of the total.
+
+==============================
+pdb.yaml
+
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: pdbdemo
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      run: nginx
+==============================
