@@ -1,0 +1,497 @@
+Managing a GKE Multi-tenant Cluster with Namespaces
+1 hour 15 minutes
+Free
+GSP766
+Google Cloud Self-Paced Labs
+
+Overview
+When considering cost optimization solutions for any Google Cloud infrastructure built around Google Kubernetes Engine (GKE) clusters, it's important to ensure that you're making effective use of the resources that are being billed. A common misstep is assigning a one to one ratio of users or teams to clusters, resulting in cluster proliferation.
+
+A multi-tenancy cluster allows for multiple users or teams to share one cluster for their workloads while maintaining isolation and fair resource sharing. This is achieved by creating namespaces. Namespaces allow multiple virtual clusters to exist on the same physical cluster.
+
+In this lab you will learn how to set up a multi-tenant cluster using multiple namespaces to optimize resource utilization and, in effect, optimize costs.
+
+What you'll do
+Create multiple namespaces in a GKE cluster
+
+Configure role-based access control for namespace access
+
+Configure Kubernetes resource quotas for fair sharing resources across multiple namespaces
+
+View and configure monitoring dashboards to view resource usage by namespace
+
+Generate a GKE metering report in Data Studio for fine grained metrics on resource utilization by namespace
+
+Setup
+Before you click the Start Lab button
+Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click Start Lab, shows how long Google Cloud resources will be made available to you.
+
+This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.
+
+What you need
+To complete this lab, you need:
+
+Access to a standard internet browser (Chrome browser recommended).
+Time to complete the lab.
+Note: If you already have your own personal Google Cloud account or project, do not use it for this lab.
+
+Note: If you are using a Chrome OS device, open an Incognito window to run this lab.
+
+How to start your lab and sign in to the Google Cloud Console
+Click the Start Lab button. If you need to pay for the lab, a pop-up opens for you to select your payment method. On the left is a panel populated with the temporary credentials that you must use for this lab.
+
+Open Google Console
+
+Copy the username, and then click Open Google Console. The lab spins up resources, and then opens another tab that shows the Sign in page.
+
+Sign in
+
+Tip: Open the tabs in separate windows, side-by-side.
+
+If you see the Choose an account page, click Use Another Account. Choose an account
+In the Sign in page, paste the username that you copied from the left panel. Then copy and paste the password.
+
+Important: You must use the credentials from the left panel. Do not use your Google Cloud Training credentials. If you have your own Google Cloud account, do not use it for this lab (avoids incurring charges).
+
+Click through the subsequent pages:
+
+Accept the terms and conditions.
+Do not add recovery options or two-factor authentication (because this is a temporary account).
+Do not sign up for free trials.
+After a few moments, the Cloud Console opens in this tab.
+
+Note: You can view the menu with a list of Google Cloud Products and Services by clicking the Navigation menu at the top-left. Cloud Console Menu
+Start Up
+After pressing the Start Lab button, you will see a blue Provisioning Lab Resources message with an estimated time remaining. It is creating and configuring the environment you will use to test managing a multi-tenant cluster. in about 5 minutes a cluster is created, BigQuery datasets are copied, and service accounts which will represent teams are generated.
+
+Once finished, the message will no longer be displayed.
+
+Please wait for this start up process to complete and the message to be removed before proceeding with the lab.
+
+Activate Cloud Shell
+Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.
+
+In the Cloud Console, in the top right toolbar, click the Activate Cloud Shell button.
+
+Cloud Shell icon
+
+Click Continue.
+
+cloudshell_continue.png
+
+It takes a few moments to provision and connect to the environment. When you are connected, you are already authenticated, and the project is set to your PROJECT_ID. For example:
+
+Cloud Shell Terminal
+
+gcloud is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.
+
+You can list the active account name with this command:
+
+gcloud auth list
+Copied!
+(Output)
+
+Credentialed accounts:
+ - <myaccount>@<mydomain>.com (active)
+(Example output)
+
+Credentialed accounts:
+ - google1623327_student@qwiklabs.net
+You can list the project ID with this command:
+
+gcloud config list project
+Copied!
+(Output)
+
+[core]
+project = <project_ID>
+(Example output)
+
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+For full documentation of gcloud see the gcloud command-line tool overview.
+Download required files
+In this lab, some steps will use yaml files to configure your Kubernetes cluster. In your Cloud Shell, download these files from a Cloud Storage bucket:
+
+gsutil -m cp -r gs://spls/gsp766/gke-qwiklab ~
+Copied!
+Change your current working directory to gke-qwiklab:
+
+cd ~/gke-qwiklab
+Copied!
+View and Create Namespaces
+Run the following to set a default compute zone and authenticate the provided cluster multi-tenant-cluster:
+
+gcloud config set compute/zone us-central1-a && gcloud container clusters get-credentials multi-tenant-cluster
+Copied!
+Default namespaces
+By default, Kubernetes clusters have 4 system namespaces. You can get a full list of the current cluster's namespaces with:
+
+kubectl get namespace
+Copied!
+The output should be similar to:
+
+NAME              STATUS   AGE
+default           Active   5m
+kube-node-lease   Active   5m
+kube-public       Active   5m
+kube-system       Active   5m
+Copied!
+default - the default namespace used when no other namespace is specified
+kube-node-lease - manages the lease objects associated with the heartbeats of each of the cluster's nodes
+kube-public - to be used for resources that may need to be visible or readable by all users throughout the whole cluster
+kube-system - used for components created by the Kubernetes system
+Not everything belongs to a namespace. For example, nodes, persistent volumes, and namespaces themselves do not belong to a namespace. For a complete list of namespaced resources:
+
+kubectl api-resources --namespaced=true
+Copied!
+When they are created, namespaced resources must be associated with a namespace. This is done by including the --namespace flag or indicating a namespace in the yaml's metadata field. The namespace can also be specified with any kubectl get subcommand to display a namespace's resources. For example:
+
+kubectl get services --namespace=kube-system
+Copied!
+This will output all services in the kube-system namespace.
+
+Creating New Namespaces
+Note: When creating additional namespaces, avoid prefixing the names with ‘kube' as this is reserved for system namespaces.
+Create 2 namespaces for team-a and team-b:
+
+kubectl create namespace team-a && \
+kubectl create namespace team-b
+Copied!
+The output for kubectl get namespace should now include your 2 new namespaces:
+
+NAME              STATUS   AGE
+default           Active   5m
+kube-node-lease   Active   5m
+kube-public       Active   5m
+kube-system       Active   5m
+team-a            Active   88s
+team-b            Active   88s
+Copied!
+By specifying the --namespace tag, you can create cluster resources in the provided namespace. Names for resources, such as deployments or pods, only need to be unique within their respective namespaces.
+
+As an example, run the following to deploy a pod in the team-a namespace and in the team-b namespace using the same name:
+
+kubectl run app-server --image=centos --namespace=team-a -- sleep infinity && \
+kubectl run app-server --image=centos --namespace=team-b -- sleep infinity
+Copied!
+Using kubectl get pods -A to see there are 2 pods named app-server, one for each team namespace:
+
+kubectl get pods -A
+Copied!
+(Output)
+
+NAMESPACE     NAME                                                        READY   STATUS    RESTARTS   AGE
+kube-system   event-exporter-gke-8489df9489-k2blq                         2/2     Running   0          3m41s
+kube-system   fluentd-gke-fmt4v                                           2/2     Running   0          113s
+kube-system   fluentd-gke-n9dvn                                           2/2     Running   0          79s
+kube-system   fluentd-gke-scaler-cd4d654d7-xj78p                          1/1     Running   0          3m37s
+kube-system   gke-metrics-agent-4jvn8                                     1/1     Running   0          3m33s
+kube-system   gke-metrics-agent-b4vvw                                     1/1     Running   0          3m27s
+kube-system   kube-dns-7c976ddbdb-gtrct                                   4/4     Running   0          3m41s
+kube-system   kube-dns-7c976ddbdb-k9bgk                                   4/4     Running   0          3m
+kube-system   kube-dns-autoscaler-645f7d66cf-jwqh5                        1/1     Running   0          3m36s
+kube-system   kube-proxy-gke-new-cluster-default-pool-eb9986d5-tpql       1/1     Running   0          3m26s
+kube-system   kube-proxy-gke-new-cluster-default-pool-eb9986d5-znm6       1/1     Running   0          3m33s
+kube-system   l7-default-backend-678889f899-xvt5t                         1/1     Running   0          3m41s
+kube-system   metrics-server-v0.3.6-64655c969-jtl57                       2/2     Running   0          3m
+kube-system   prometheus-to-sd-d6dpf                                      1/1     Running   0          3m27s
+kube-system   prometheus-to-sd-rfdlv                                      1/1     Running   0          3m33s
+kube-system   stackdriver-metadata-agent-cluster-level-79f9ddf6d6-7ck2w   2/2     Running   0          2m56s
+team-a        app-server                                                  1/1     Running   0          33s
+team-b        app-server                                                  1/1     Running   0          33s
+Copied!
+Click Check my progress to verify that you've performed the above task.
+Create Namespaces
+
+Use kubectl describe to see additional details for each of the newly created pods by specifying the namespace with the --namespace tag:
+
+kubectl describe pod app-server --namespace=team-a
+Copied!
+To work exclusively with resources in one namespace, you can set it once in the kubectl context instead of using the --namespace flag for every command:
+
+kubectl config set-context --current --namespace=team-a
+Copied!
+After this, any subsequent commands will be run against the indicated namespace without specifying the --namespace flag:
+
+kubectl describe pod app-server
+Copied!
+In the next section, you will configure role-based access control for your namespaces to help organize the cluster.
+
+Access Control in Namespaces
+Provisioning access to namespaced resources in a cluster is accomplished by granting a combination of IAM roles and Kubernetes' built-in role-based access control (RBAC). An IAM role will give an account initial access to the project while the RBAC permissions will grant granular access to a cluster's namespaced resources (pods, deployments, services, etc).
+
+IAM Roles
+To grant IAM roles in a project, you'll need the Project IAM Admin role assigned. This is already set up in your Qwiklabs temporary account.
+
+When managing access control for Kubernetes, Identity and Access Management (IAM) is used to manage access and permissions on a higher organization and project levels.
+
+There are several roles that can be assigned to users and service accounts in IAM that govern their level of access with GKE. RBAC's granular permissions build on the access already provided by IAM and cannot restrict access granted by it. As a result, for multi-tenant namespaced clusters, the assigned IAM role should grant minimal access.
+
+Here's a table of common GKE IAM roles you can assign:
+
+Role	Description
+Kubernetes Engine Admin
+
+Provides access to full management of clusters and their Kubernetes API objects. A user with this role will be able to create, edit and delete any resource in any cluster and subsequent namespaces.
+
+Kubernetes Engine Developer
+
+Provides access to Kubernetes API objects inside clusters. A user with this role will be able to create, edit, and delete resources in any cluster and subsequent namespaces.
+
+Kubernetes Engine Cluster Admin
+
+Provides access to management of clusters. A user with this role will not have access to create or edit resources within any cluster or subsequent namespaces directly, but will be able to create, modify, and delete any cluster.
+
+Kubernetes Engine Viewer
+
+Provides read-only access to GKE resources. A user with this role will have read-only access to namespaces and their resources.
+
+Kubernetes Engine Cluster Viewer
+
+Get and list access to GKE Clusters. This is the minimal role required for anyone who needs to access resources within a cluster's namespaces.
+
+While most of these roles grant too much access to restrict with RBAC, the IAM role Kubernetes Engine Cluster Viewer gives users just enough permissions to access the cluster and namespaced resources.
+
+Your lab project has a service account that will represent a developer that will use the team-a namespace. Grant the account the Kubernetes Engine Cluster Viewer role by running the following:
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+--member=serviceAccount:team-a-dev@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com  \
+--role=roles/container.clusterViewer
+Copied!
+Kubernetes RBAC
+Within a cluster, access to any resource type (pods, services, deployments, etc) is defined by either a role or a cluster role. Only roles are allowed to be scoped to a namespace. While a role will indicate the resources and the action allowed for each resource, a role binding will indicate to what user accounts or groups to assign that access to.
+
+To create a role in the current namespace, specify the resource type as well as the verbs that will indicate what type of action that will be allowed. Roles with single rules can be created with kubectl create:
+
+kubectl create role pod-reader \
+--resource=pods --verb=watch --verb=get --verb=list
+Copied!
+Roles with multiple rules can be created using a yaml file. An example file is provided within the files you downloaded earlier in the lab.
+
+Inspect the yaml file:
+
+cat developer-role.yaml
+Copied!
+Sample Output:
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: team-a
+  name: developer
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "serviceaccounts"]
+  verbs: ["update", "create", "delete", "get", "watch", "list"]
+- apiGroups:["apps"]
+  resources: ["deployments"]
+  verbs: ["update", "create", "delete", "get", "watch", "list"]
+Copied!
+Apply the role above:
+
+kubectl create -f developer-role.yaml
+Copied!
+Create a role binding between the team-a-developers serviceaccount and the developer-role:
+
+kubectl create rolebinding team-a-developers \
+--role=developer --user=team-a-dev@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+Copied!
+Test the rolebinding
+Download the service account keys used to impersonate the service account:
+
+gcloud iam service-accounts keys create /tmp/key.json --iam-account team-a-dev@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+Copied!
+Click Check my progress to verify that you've performed the above task.
+Access Control in Namespaces
+
+In Cloud Shell click the + to open a new tab in your terminal. Here, run the following to activate the service account. This will allow you to run the commands as the account:
+
+gcloud auth activate-service-account  --key-file=/tmp/key.json
+Copied!
+Get the credentials for your cluster, as the service account:
+
+gcloud container clusters get-credentials multi-tenant-cluster --zone us-central1-a --project ${GOOGLE_CLOUD_PROJECT}
+Copied!
+You'll see now that as team-a-dev you're able to list pods in the team-a namespace:
+
+kubectl get pods --namespace=team-a
+Copied!
+Output:
+
+NAME           READY   STATUS    RESTARTS   AGE
+app-server     1/1     Running   0          6d
+Copied!
+But listing pods in the team-b namespace is restricted:
+
+kubectl get pods --namespace=team-b
+Copied!
+Output:
+
+Error from server (Forbidden): pods is forbidden: User "team-a-dev@a-gke-project.iam.gserviceaccount.com" cannot list resource "pods" in API group "" in the namespace "team-b": requires one of ["container.pods.list"] permission(s).
+Copied!
+Return to your first Cloud Shell tab or open a new one. Renew the cluster credentials and reset your context to the team-a namespace:
+
+gcloud container clusters get-credentials multi-tenant-cluster --zone us-central1-a --project ${GOOGLE_CLOUD_PROJECT}
+Copied!
+Resource Quotas
+When a cluster is shared in a multi-tenant set up, it's important to make sure that users are not able to use more than their fair share of the cluster resources. A resource quota object (ResourceQuota) will define constraints that will limit resource consumption in a namespace. A resource quota can specify a limit to object counts (pods, services, stateful sets, etc), total sum of storage resources (persistent volume claims, ephemeral storage, storage classes ), or total sum of compute resources. (cpu and memory).
+
+For example, the following will set a limit to the number of pods allowed in the namespace team-a to 3, and the number of loadbalancers to 1:
+
+kubectl create quota test-quota \
+--hard=count/pods=2,count/services.loadbalancers=1 --namespace=team-a
+Copied!
+Create a second pod in the namespace team-a:
+
+kubectl run app-server-2 --image=centos --namespace=team-a -- sleep infinity
+Copied!
+Now try to create a third pod:
+
+kubectl run app-server-3 --image=centos --namespace=team-a -- sleep infinity
+Copied!
+You should receive the following error:
+
+Error from server (Forbidden): pods "app-server-3" is forbidden: exceeded quota: test-quota, requested: count/pods=1, used: count/pods=2, limited: count/pods=2
+Copied!
+You can check details about your resource quota using kubectl describe:
+
+kubectl describe quota test-quota --namespace=team-a
+Copied!
+Output:
+
+Name:                         test-quota
+Namespace:                    team-a
+Resource                      Used  Hard
+--------                      ----  ----
+count/pods                    2     2
+count/services.loadbalancers  0     1
+Copied!
+Here you can see a list of resources restricted by the resource quota, along with the hard limit configured and the quantity currently used.
+
+Update test-quota to have a limit of 6 pods by running:
+
+export KUBE_EDITOR="nano"
+kubectl edit quota test-quota --namespace=team-a
+Copied!
+You'll be able to edit a yaml file that kubectl will use to update the quota. The hard quota is the value for count/pods under spec.
+
+Change the value of count/pods under spec to 6:
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  creationTimestamp: "2020-10-21T14:12:07Z"
+  name: test-quota
+  namespace: team-a
+  resourceVersion: "5325601"
+  selfLink: /api/v1/namespaces/team-a/resourcequotas/test-quota
+  uid: a4766300-29c4-4433-ba24-ad10ebda3e9c
+spec:
+  hard:
+    count/pods: "6"
+    count/services.loadbalancers: "1"
+status:
+  hard:
+    count/pods: "5"
+    count/services.loadbalancers: "1"
+  used:
+    count/pods: "2"
+Copied!
+Press ctrl + X, Y and Enter to save and exit.
+
+The updated quota should now be reflected in the output:
+
+kubectl describe quota test-quota --namespace=team-a
+Copied!
+(output)
+
+Name:                         test-quota
+Namespace:                    team-a
+Resource                      Used  Hard
+--------                      ----  ----
+count/pods                    2     6
+count/services.loadbalancers  0     1
+Copied!
+CPU and Memory Quotas
+
+When setting quotas for CPU and memory, you can indicate a quota for the sum of requests (a value that a container is guaranteed to get) or the sum of limits (a value that a container will never be allowed to pass).
+
+In this lab, your cluster has 4 n1-standard-1 machines, with 1 core and 3.75GB memory each. You have been provided with a sample resource quota yaml file for your cluster:
+
+cpu-mem-quota.yaml
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: cpu-mem-quota
+  namespace: team-a
+spec:
+  hard:
+    limits.cpu: "4"
+    limits.memory: "12Gi"
+    requests.cpu: "2"
+    requests.memory: "8Gi"
+Copied!
+Apply the file configuration:
+
+Make sure you're still in the gke-qwiklab directory.
+kubectl create -f cpu-mem-quota.yaml
+Copied!
+With this quota in place, the sum of all pods' CPU and memory requests will be capped at 2cpu and 8GiB, and their limits at 4cpu and 12GiB, respectively.
+
+Note: When a resource quota for CPU or memory exists in a namespace, every container that is created in that namespace thereafter must have its own CPU and memory limit defined on creation or by having a default value assigned in the namespace as a LimitRange.
+
+To demonstrate the CPU and memory quota, create a new pod using cpu-mem-demo-pod.yaml:
+
+cpu-mem-demo-pod.yaml:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-mem-demo
+  namespace: team-a
+spec:
+  containers:
+  - name: cpu-mem-demo-ctr
+    image: nginx
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "400m"
+        memory: "512Mi"
+Copied!
+Apply the file configuration:
+
+kubectl create -f cpu-mem-demo-pod.yaml --namespace=team-a
+Copied!
+Once this pod has been created, run the following to see its CPU and memory requests and limits reflected in the quota:
+
+kubectl describe quota cpu-mem-quota --namespace=team-a
+Copied!
+(output)
+
+Name:            cpu-mem-quota
+Namespace:       team-a
+Resource         Used   Hard
+--------         ----   ----
+limits.cpu       400m   4
+limits.memory    512Mi  12Gi
+requests.cpu     100m   2
+requests.memory  128Mi  8Gi
+Copied!
+Click Check my progress to verify that you've performed the above task.
+Resource Quotas
+
+Monitoring GKE and GKE Usage Metering
+For most multi-tenant clusters, it's likely that the workloads and resource requirements of each of the tenants will change and resource quotas might need to be adjusted. By using Monitoring you can get a general view of the resources each namespace is using.
+
+With GKE usage metering, you're able to get a more granular view of that resource usage and subsequently a better idea of costs associated with each tenant.
+
+Monitoring Dashboard
+
+In the Cloud Console, click on the Navigation menu at the top left corner of the page and then click Operations > Monitoring within that menu.
+
+Wait a minute while your workspace for your project is constructed. Once you're on the Overview page, select Dashboards from the left menu:
