@@ -1,0 +1,6 @@
+https://www.youtube.com/watch?v=BI3Mz-smSGg
+as prometheus is basically for node moniory, for pod logs/liveness/readuness probe we go for ELK
+beats--file/metric -->logstash(for indexing)-->elasticsearch-->Kibana
+NOte: metric beat --collect services on server level/OS related information
+elastic search is open source search and analyticall engine for all types of data, act as centralised storage.
+kibana -also open source visualisation tool /dashboard
