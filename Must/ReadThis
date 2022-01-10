@@ -3,6 +3,8 @@ K8s--either i preapre my own helm chart or sometime drect;y pull from artifaoryh
 created various manifest.yml files , network policies,statefulset deplyments--fr sticky identity fr databases pods--write-headless svc and read clusterIP
 headless--as we want to assign to specifc pod, clusterIP-NOne,user selctor fr pod selection
 
+GIT :Stable release	2.34.1 / 24 November 2021
+
 worked on ingress routing rules/most;y used metallb.
 worked o istio virtual services/destination rules for canary deplyments.
 Regading jenkis: worte jenkins pipeline--used docker agent/mavne/gradle/k8s/, confured email, sonar qualitycheck into jenkins files.
