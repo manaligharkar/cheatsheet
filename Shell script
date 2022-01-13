@@ -27,4 +27,9 @@ if [ -z "$1" ]
     echo "No argument supplied"
 fi
 =====================
+to find enplty file
+cloud_user@c7d0abee9d1c:~/istio/istio-1.12.1$ find . -type f  -empty
+./lput
+cloud_user@c7d0abee9d1c:~/istio/istio-1.12.1$
+--------------------------------
 
