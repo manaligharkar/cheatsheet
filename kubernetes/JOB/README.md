@@ -1,4 +1,5 @@
 root@mysql-856475bcf7-s5jph:/# mysql -h localhost -u root -padmin test
+
 Warning: Using a password on the command line interface can be insecure.
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
