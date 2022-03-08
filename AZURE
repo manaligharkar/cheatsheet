@@ -8,4 +8,7 @@ https://www.pluralsight.com/courses/monitoring-troubleshooting-azure-kubernetes-
 https://www.pluralsight.com/courses/deploying-applications-aks
 
 https://www.pluralsight.com/paths/managing-and-orchestrating-containers-with-azure-kubernetes-service-aks
-
+============================================================================================
+An availability set : is a logical grouping of VMs that allows Azure to understand how your application is built to provide for redundancy and availability
+Each virtual machine in your availability set is assigned an update domain and a fault domain by the underlying Azure platform. 
+three fault domains and twenty update domains. 
