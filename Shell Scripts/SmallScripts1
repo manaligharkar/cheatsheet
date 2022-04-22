@@ -13,3 +13,13 @@ echo $counter
  ((counter++))
 done
 ------------------------------------
+## To Read file 
+We can redirect the content of the file to while loop using the Input redirection operator (<). and To remove empty line "-z"
+while read LREAD
+do
+    if [[ ! -z $LREAD ]]
+    then
+        echo ${LREAD} 
+    fi
+done < testfile
+---------------------------------------
