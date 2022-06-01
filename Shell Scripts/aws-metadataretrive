@@ -1,0 +1,20 @@
+Pre-steps:
+Instance ID
+i-08a3395e13f0b6ab2 (manali1-ec2)
+Open an SSH client.
+Locate your private key file. The key used to launch this instance is ee.pem
+Run this command, if necessary, to ensure your key is not publicly viewable.
+ chmod 400 ee.pem
+Connect to your instance using its Public DNS:
+ ec2-54-196-172-7.compute-1.amazonaws.com
+Example:
+ ssh -i "ee.pem" ubuntu@ec2-54-196-172-7.compute-1.amazonaws.com
+ ---------------------------------------------------------
+
+
+#!/bin/bash
+for input in "$@"
+do
+ssh -i "ee.pem" ubuntu@$input 'for line in $(curl http://169.254.169.254/latest/meta-data/); do echo -e "\n$line :" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt ; curl http://169.254.169.254/latest/meta-data/$line >>   $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt ;echo -e "\n----------------------" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt  ;done && exit'
+scp -i "ee.pem" ubuntu@$input:/home/ubuntu/$input.txt . 
+done
