@@ -18,3 +18,11 @@ do
 ssh -i "ee.pem" ubuntu@$input 'for line in $(curl http://169.254.169.254/latest/meta-data/); do echo -e "\n$line :" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt ; curl http://169.254.169.254/latest/meta-data/$line >>   $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt ;echo -e "\n----------------------" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt  ;done && exit'
 scp -i "ee.pem" ubuntu@$input:/home/ubuntu/$input.txt . 
 done
+=============================\\============
+#!/bin/bash
+for input in "$@"
+do
+
+ssh -i "upp.pem" ubuntu@$input 'echo -e "\n{" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt && for line in $(curl http://169.254.169.254/latest/meta-data/); do echo -e "\n\"$line\": \"$(curl http://169.254.169.254/latest/meta-data/$line)\"," >>   $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt ;done && echo -e "\n}" >> $(curl http://169.254.169.254/latest/meta-data/public-hostname).txt  && exit'
+scp -i "upp.pem" ubuntu@$input:/home/ubuntu/$input.txt .
+done
