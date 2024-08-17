@@ -1,0 +1,14 @@
+The Container Network Interface (CNI) plugin is a crucial component in managing networking capabilities within Kubernetes clusters.
+
+When a new container or pod is created, it doesn’t have a way to communicate over the network. That’s where CNI comes in. CNI assigns an IP address to each of the containers, and sets up the necessary network routes on the host. This allows the container to send and receive data over the network.
+
+There are several CNI plugins available, each with its own features and benefits. The most common ones are listed below:
+
+﻿Flannel: A simple and easy-to-use CNI that creates a flat network across all nodes in a Kubernetes cluster.
+
+﻿Calico: Known for its advanced networking capabilities and network policies for enhanced security.
+
+﻿Weave Net: Provides a simple and resilient network for applications, and supports network policies for extra security.
+
+﻿Kindnet: A very simple and lightweight CNI plugin designed specifically for Kubernetes. It supports both IPv4 and IPv6.
+========================================================================================================================
