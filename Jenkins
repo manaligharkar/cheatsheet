@@ -95,3 +95,5 @@ https://github.com/addamstj/Jenkins-Course/tree/master
 https://github.com/jenkins-docs/simple-java-maven-app
 https://github.com/jenkinsci/pipeline-model-definition-plugin/wiki/Parametrized-pipelines
 https://www.jenkins.io/doc/book/pipeline/jenkinsfile/#using-environment-variables
+https://www.jenkins.io/doc/pipeline/steps/pipeline-build-step/
+
